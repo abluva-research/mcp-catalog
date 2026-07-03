@@ -124,6 +124,9 @@ toolPreview:
 - name: list_models
   description: List all models enabled for MCP access in the Odoo instance.
   params: {}
+- name: list_resource_templates
+  description: List available resource URI templates and their patterns for direct access to Odoo data.
+  params: {}
 - name: aggregate_records
   description: Server-side aggregation with grouping, sums, and counts. Pushes work to PostgreSQL instead of pulling raw rows.
   params:
