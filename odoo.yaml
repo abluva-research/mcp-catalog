@@ -5,8 +5,6 @@ shortDescription: Access and manage Odoo ERP data including customers, sales, in
 description: |
   A Model Context Protocol (MCP) server that enables AI assistants to interact with Odoo ERP systems. Access business data, search records, create new entries, update existing data, and manage your Odoo instance through natural language.
 
-  Works with any Odoo instance! Use YOLO mode for quick testing and demos with any standard Odoo installation. For enterprise security, access controls, and production use, install the [Odoo MCP module](https://apps.odoo.com/apps/modules/19.0/mcp_server).
-
   ## Features
   - **Search & Retrieve**: Find any Odoo record (customers, products, invoices, etc.) with smart field selection
   - **Create Records**: Add new entries with field validation and permission checks
@@ -33,6 +31,13 @@ description: |
   **Optional:**
   - **Database Name**: Auto-detected if not set, required if database listing is restricted on your server
   - **Locale**: Language for Odoo responses (e.g., es_ES, fr_FR)
+  - **YOLO Mode**: Bypasses the MCP module requirement for quick testing. Set to `read` for read-only access or `true` for full CRUD (development only, never use in production)
+  - **Enable Method Calls**: Enables the `call_model_method` tool for workflow actions. Requires YOLO mode set to `true`
+
+  **Operating Modes:**
+  - **Standard mode** (production): Requires Odoo 16.0+ with the [MCP module](https://apps.odoo.com/apps/modules/19.0/mcp_server) installed. Provides access controls and model restrictions.
+  - **YOLO read-only mode** (`ODOO_YOLO=read`): Works with any Odoo instance, allows search/read operations only. Safe for demos.
+  - **YOLO full access mode** (`ODOO_YOLO=true`): Works with any Odoo instance, allows all operations. Development/testing only.
 
   ## Examples
   - "Show me all customers from Spain"
@@ -54,14 +59,14 @@ env:
   description: Your Odoo instance URL (e.g., https://mycompany.odoo.com)
 - key: ODOO_API_KEY
   name: Odoo API Key
-  required: false
+  required: true
   sensitive: true
-  description: API key for authentication. Either this or username/password is required.
+  description: API key for authentication (recommended). Alternatively, provide username and password instead.
 - key: ODOO_USER
   name: Odoo Username
   required: false
   sensitive: false
-  description: Username for authentication (if not using API key)
+  description: Username for authentication (alternative to API key)
 - key: ODOO_PASSWORD
   name: Odoo Password
   required: false
@@ -77,6 +82,16 @@ env:
   required: false
   sensitive: false
   description: Language/locale for Odoo responses (e.g., es_ES, fr_FR, de_DE)
+- key: ODOO_YOLO
+  name: YOLO Mode
+  required: false
+  sensitive: false
+  description: "Bypass MCP module requirement. Values: off (default, requires MCP module), read (read-only access without module), true (full CRUD without module — development only)"
+- key: ODOO_MCP_ENABLE_METHOD_CALLS
+  name: Enable Method Calls
+  required: false
+  sensitive: false
+  description: "Enable the call_model_method tool for workflow actions. Requires ODOO_YOLO=true. Values: false (default), true"
 
 runtime: containerized
 containerizedConfig:
