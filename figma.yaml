@@ -58,7 +58,6 @@ runtime: remote
 remoteConfig:
   fixedURL: https://figma-console-mcp.southleft.com/sse
 toolPreview:
-# Status & Diagnostics
 - name: figma_get_status
   description: Check WebSocket bridge connection and file context.
   params: {}
@@ -69,14 +68,10 @@ toolPreview:
   description: Switch the active file target among connected plugins.
   params:
     url: "Figma file URL to navigate to"
-
-# Visual Debugging
 - name: figma_take_screenshot
   description: Capture a screenshot of the current Figma canvas or a specific node.
   params:
     nodeId: "Specific node ID to screenshot (optional)"
-
-# Design System Extraction
 - name: figma_get_design_system_kit
   description: Full design system in one call — tokens, components, styles, visual specs.
   params:
@@ -98,8 +93,6 @@ toolPreview:
   description: Get full file structure and node tree.
   params:
     fileUrl: "Figma file URL"
-
-# Library Inspection
 - name: figma_get_library_component_by_key
   description: Resolve any component key to full properties, variants, and visual specs without needing the source library file URL.
   params:
@@ -110,8 +103,6 @@ toolPreview:
     libraryName: "Filter by library name (optional)"
     collectionName: "Filter by collection name (optional)"
     resolvedType: "Filter by variable type (optional)"
-
-# Design Creation
 - name: figma_execute
   description: Run any Figma Plugin API code to create designs — frames, shapes, text, components, auto-layout, styles, and effects.
   params:
@@ -121,8 +112,6 @@ toolPreview:
   params:
     axes: "Variant axes matrix (e.g., {State: ['default', 'hover'], Size: ['sm', 'lg']})"
     baseComponentId: "ID of the base component to generate variants from"
-
-# Token Sync
 - name: figma_export_tokens
   description: Export Figma variables to design token files. Supports DTCG JSON, CSS, Tailwind v4/v3, SCSS, TS, JSON, Style Dictionary, and Tokens Studio formats.
   params:
@@ -135,8 +124,6 @@ toolPreview:
     fileUrl: "Figma file URL"
     payload: "Token data to import (DTCG JSON)"
     strategy: "Import strategy: merge (default) or replace"
-
-# Variable Management
 - name: figma_create_variable_collection
   description: Create a new variable collection with modes.
   params:
@@ -165,8 +152,6 @@ toolPreview:
     name: "Collection name"
     modes: "List of mode names"
     variables: "Variable definitions with values per mode"
-
-# FigJam Tools
 - name: figjam_create_sticky
   description: Create a sticky note with color options on a FigJam board.
   params:
@@ -186,8 +171,6 @@ toolPreview:
 - name: figjam_get_board_contents
   description: Read all content from a FigJam board.
   params: {}
-
-# Slides Tools
 - name: figma_list_slides
   description: List all slides with IDs, positions, and skip status.
   params: {}
@@ -201,22 +184,16 @@ toolPreview:
     text: "Text content"
     fontSize: "Font size (optional)"
     fontFamily: "Font family (optional)"
-
-# Accessibility
 - name: figma_lint_design
   description: Run 14 WCAG design checks with conformance level tagging on a Figma file or selection.
   params:
     fileUrl: "Figma file URL"
     rules: "Rule groups to check (wcag, design-system, layout, best-practice) (optional)"
-
-# Design-Code Parity
 - name: figma_check_design_parity
   description: Compare Figma component specs against code implementation, producing a scored diff report with actionable fix items.
   params:
     componentName: "Figma component name"
     codePath: "Path to the code implementation"
-
-# Version History
 - name: figma_diff_versions
   description: Diff two file versions for component and binding deltas.
   params:
