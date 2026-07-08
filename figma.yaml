@@ -1,0 +1,206 @@
+name: Figma
+entryKey: obot-figma
+serverUserType: singleUser
+shortDescription: Interact with Figma files, components, styles, comments, webhooks, and library analytics
+description: |
+  A Model Context Protocol (MCP) server for interacting with the Figma API. This server provides a complete set of Figma API methods including file access, component inspection, style management, comments, webhooks, and library analytics.
+
+  ## Features
+  - **File Access**: Get Figma files, specific nodes, rendered images, and image fills
+  - **Version History**: Access file version history for tracking changes
+  - **Comments & Reactions**: Read, post, and delete comments and reactions on Figma files
+  - **Components & Component Sets**: Browse team and file components and component sets
+  - **Styles**: Access team and file styles for design tokens
+  - **Teams & Projects**: Navigate team projects and project files
+  - **Webhooks**: Create, update, and manage webhooks for file events
+  - **Library Analytics**: Track component, style, and variable usage across your organization
+
+  ## What you'll need to connect
+
+  **Required:**
+  - **Figma API Key**: A Figma Personal Access Token with read permissions on File content and Dev resources
+
+  **To generate an access token:**
+  1. In Figma, click your profile icon and select Settings
+  2. Go to the Security tab
+  3. Scroll to Personal access tokens and click Generate new token
+  4. Name the token and ensure read permissions on File content and Dev resources
+
+metadata:
+  categories: Design, Developer Tools
+icon: https://avatars.githubusercontent.com/u/5155369?s=200&v=4
+repoURL: https://github.com/thirdstrandstudio/mcp-figma
+env:
+- key: FIGMA_API_KEY
+  name: Figma API Key
+  required: true
+  sensitive: true
+  description: Your Figma Personal Access Token for API authentication
+runtime: containerized
+containerizedConfig:
+  image: ghcr.io/thirdstrandstudio/mcp-figma:latest
+  port: 8099
+  path: /
+  args:
+  - node
+  - dist/index.js
+toolPreview:
+# User Methods
+- name: figma_get_me
+  description: Get the current authenticated user's information.
+  params: {}
+
+# File Methods
+- name: figma_get_file
+  description: Get a Figma file by key. Use depth parameter for large files.
+  params:
+    fileKey: "The key of the Figma file (from the file URL)"
+    depth: "Depth of the node tree to return (optional, use 1 for large files)"
+- name: figma_get_file_nodes
+  description: Get specific nodes from a Figma file.
+  params:
+    fileKey: "The key of the Figma file"
+    ids: "Comma-separated list of node IDs to retrieve"
+- name: figma_get_images
+  description: Render images from a Figma file.
+  params:
+    fileKey: "The key of the Figma file"
+    ids: "Comma-separated list of node IDs to render"
+    format: "Image format: jpg, png, svg, or pdf (optional)"
+    scale: "Render scale between 0.01 and 4 (optional)"
+- name: figma_get_image_fills
+  description: Get image fills in a Figma file.
+  params:
+    fileKey: "The key of the Figma file"
+- name: figma_get_file_versions
+  description: Get version history of a Figma file.
+  params:
+    fileKey: "The key of the Figma file"
+
+# Comment Methods
+- name: figma_get_comments
+  description: Get comments in a Figma file.
+  params:
+    fileKey: "The key of the Figma file"
+    as_md: "Return comments as markdown (optional)"
+- name: figma_post_comment
+  description: Add a comment to a Figma file.
+  params:
+    fileKey: "The key of the Figma file"
+    message: "The comment text"
+- name: figma_delete_comment
+  description: Delete a comment from a Figma file.
+  params:
+    fileKey: "The key of the Figma file"
+    comment_id: "The ID of the comment to delete"
+- name: figma_get_comment_reactions
+  description: Get reactions for a comment.
+  params:
+    fileKey: "The key of the Figma file"
+    comment_id: "The ID of the comment"
+- name: figma_post_comment_reaction
+  description: Add a reaction to a comment.
+  params:
+    fileKey: "The key of the Figma file"
+    comment_id: "The ID of the comment"
+    emoji: "The emoji reaction to add"
+- name: figma_delete_comment_reaction
+  description: Delete a reaction from a comment.
+  params:
+    fileKey: "The key of the Figma file"
+    comment_id: "The ID of the comment"
+    emoji: "The emoji reaction to remove"
+
+# Team and Project Methods
+- name: figma_get_team_projects
+  description: Get projects in a team.
+  params:
+    team_id: "The ID of the team"
+- name: figma_get_project_files
+  description: Get files in a project.
+  params:
+    project_id: "The ID of the project"
+
+# Component Methods
+- name: figma_get_team_components
+  description: Get components in a team.
+  params:
+    team_id: "The ID of the team"
+- name: figma_get_file_components
+  description: Get components in a file.
+  params:
+    fileKey: "The key of the Figma file"
+- name: figma_get_component
+  description: Get a component by key.
+  params:
+    key: "The unique key of the component"
+- name: figma_get_team_component_sets
+  description: Get component sets in a team.
+  params:
+    team_id: "The ID of the team"
+- name: figma_get_file_component_sets
+  description: Get component sets in a file.
+  params:
+    fileKey: "The key of the Figma file"
+- name: figma_get_component_set
+  description: Get a component set by key.
+  params:
+    key: "The unique key of the component set"
+
+# Style Methods
+- name: figma_get_team_styles
+  description: Get styles in a team.
+  params:
+    team_id: "The ID of the team"
+- name: figma_get_file_styles
+  description: Get styles in a file.
+  params:
+    fileKey: "The key of the Figma file"
+- name: figma_get_style
+  description: Get a style by key.
+  params:
+    key: "The unique key of the style"
+
+# Webhook Methods
+- name: figma_post_webhook
+  description: Create a webhook for file events.
+  params:
+    event_type: "The event type to listen for (e.g., FILE_UPDATE)"
+    team_id: "The ID of the team"
+    endpoint: "The URL to receive webhook events"
+    passcode: "A passcode for webhook verification"
+    description: "Description of the webhook (optional)"
+- name: figma_get_webhook
+  description: Get a webhook by ID.
+  params:
+    webhook_id: "The ID of the webhook"
+- name: figma_update_webhook
+  description: Update a webhook.
+  params:
+    webhook_id: "The ID of the webhook"
+    event_type: "The new event type (optional)"
+    endpoint: "The new endpoint URL (optional)"
+    passcode: "The new passcode (optional)"
+    description: "The new description (optional)"
+- name: figma_delete_webhook
+  description: Delete a webhook.
+  params:
+    webhook_id: "The ID of the webhook to delete"
+- name: figma_get_team_webhooks
+  description: Get webhooks for a team.
+  params:
+    team_id: "The ID of the team"
+
+# Library Analytics Methods
+- name: figma_get_library_analytics_component_usages
+  description: Get library analytics component usage data.
+  params:
+    team_id: "The ID of the team"
+- name: figma_get_library_analytics_style_usages
+  description: Get library analytics style usage data.
+  params:
+    team_id: "The ID of the team"
+- name: figma_get_library_analytics_variable_usages
+  description: Get library analytics variable usage data.
+  params:
+    team_id: "The ID of the team"
