@@ -1,206 +1,231 @@
 name: Figma
 entryKey: obot-figma
 serverUserType: singleUser
-shortDescription: Interact with Figma files, components, styles, comments, webhooks, and library analytics
+shortDescription: Extract design systems, create UI components, manage variables, sync tokens, and debug Figma files
 description: |
-  A Model Context Protocol (MCP) server for interacting with the Figma API. This server provides a complete set of Figma API methods including file access, component inspection, style management, comments, webhooks, and library analytics.
+  A Model Context Protocol (MCP) server that bridges design and development — giving AI assistants complete access to Figma for extraction, creation, debugging, and bidirectional token sync.
 
   ## Features
-  - **File Access**: Get Figma files, specific nodes, rendered images, and image fills
-  - **Version History**: Access file version history for tracking changes
-  - **Comments & Reactions**: Read, post, and delete comments and reactions on Figma files
-  - **Components & Component Sets**: Browse team and file components and component sets
-  - **Styles**: Access team and file styles for design tokens
-  - **Teams & Projects**: Navigate team projects and project files
-  - **Webhooks**: Create, update, and manage webhooks for file events
-  - **Library Analytics**: Track component, style, and variable usage across your organization
+  - **Design System Extraction**: Pull variables, components, styles, and full design system kits in one call
+  - **Write to Canvas**: Create frames, shapes, text, components, and complete UI mockups directly in Figma
+  - **Bidirectional Token Sync**: Export Figma variables to 10 formats (DTCG, CSS, Tailwind, SCSS, TS, JSON, Style Dictionary, Tokens Studio) and push code-side edits back
+  - **Variable Management**: Full CRUD operations on design tokens — create, update, rename, delete, batch operations
+  - **Component Creation**: Build component sets with variants from an axes matrix in one call
+  - **FigJam Boards**: Create stickies, flowcharts, tables, code blocks, and read board contents
+  - **Figma Slides**: Build and manage presentations programmatically (17 tools)
+  - **Accessibility Scanning**: 14 WCAG design checks with conformance level tagging and component scorecards
+  - **Version History**: List versions, diff snapshots, generate changelogs, trace changes with binary-search blame
+  - **Visual Debugging**: Take screenshots, watch console logs, and real-time monitoring
+  - **Library Inspection**: Resolve component keys, list library variables, import tokens — works on every Figma plan
+  - **Design-Code Parity**: Compare Figma specs against code implementations with scored diff reports
 
   ## What you'll need to connect
 
   **Required:**
-  - **Figma API Key**: A Figma Personal Access Token with read permissions on File content and Dev resources
+  - **Figma Access Token**: A Figma Personal Access Token with scopes: File content (Read), File versions (Read), Variables (Read), Comments (Read and write)
 
   **To generate an access token:**
-  1. In Figma, click your profile icon and select Settings
-  2. Go to the Security tab
-  3. Scroll to Personal access tokens and click Generate new token
-  4. Name the token and ensure read permissions on File content and Dev resources
+  1. Go to Figma Settings > Security > Personal access tokens
+  2. Click Generate new token
+  3. Set the required scopes and copy the token (starts with `figd_`)
 
+  **Optional:**
+  - **Enable MCP Apps**: Set to `true` to enable interactive UI experiences (Token Browser, Design System Dashboard)
+
+  ## Examples
+  - "Get all design variables from this Figma file"
+  - "Create a card component with header, content, and action button"
+  - "Export tokens to Tailwind v4 format"
+  - "Compare the Button component against our React implementation"
+  - "Create a retrospective board with columns in FigJam"
+  - "Take a screenshot of the current canvas"
 metadata:
   categories: Design, Developer Tools
 icon: https://avatars.githubusercontent.com/u/5155369?s=200&v=4
-repoURL: https://github.com/thirdstrandstudio/mcp-figma
+repoURL: https://github.com/southleft/figma-console-mcp
 env:
-- key: FIGMA_API_KEY
-  name: Figma API Key
+- key: FIGMA_ACCESS_TOKEN
+  name: Figma Access Token
   required: true
   sensitive: true
-  description: Your Figma Personal Access Token for API authentication
+  description: Your Figma Personal Access Token (starts with figd_). Requires scopes: File content (Read), File versions (Read), Variables (Read), Comments (Read and write).
+- key: ENABLE_MCP_APPS
+  name: Enable MCP Apps
+  required: false
+  sensitive: false
+  description: "Enable interactive MCP Apps (Token Browser, Design System Dashboard). Values: true, false (default)"
 runtime: containerized
 containerizedConfig:
-  image: ghcr.io/thirdstrandstudio/mcp-figma:latest
+  image: ghcr.io/southleft/figma-console-mcp:latest
   port: 8099
   path: /
   args:
-  - node
-  - dist/index.js
+  - npx
+  - -y
+  - figma-console-mcp@latest
 toolPreview:
-# User Methods
-- name: figma_get_me
-  description: Get the current authenticated user's information.
+# Status & Diagnostics
+- name: figma_get_status
+  description: Check WebSocket bridge connection and file context.
+  params: {}
+- name: figma_diagnose
+  description: Designer-readable health check with setup guidance.
+  params: {}
+- name: figma_navigate
+  description: Switch the active file target among connected plugins.
+  params:
+    url: "Figma file URL to navigate to"
+
+# Visual Debugging
+- name: figma_take_screenshot
+  description: Capture a screenshot of the current Figma canvas or a specific node.
+  params:
+    nodeId: "Specific node ID to screenshot (optional)"
+
+# Design System Extraction
+- name: figma_get_design_system_kit
+  description: Full design system in one call — tokens, components, styles, visual specs.
+  params:
+    fileUrl: "Figma file URL"
+- name: figma_get_variables
+  description: Extract design tokens/variables from a Figma file.
+  params:
+    fileUrl: "Figma file URL"
+- name: figma_get_component
+  description: Get component data (metadata or reconstruction spec).
+  params:
+    fileUrl: "Figma file URL"
+    componentName: "Name of the component to retrieve"
+- name: figma_get_styles
+  description: Get color, text, and effect styles from a file.
+  params:
+    fileUrl: "Figma file URL"
+- name: figma_get_file_data
+  description: Get full file structure and node tree.
+  params:
+    fileUrl: "Figma file URL"
+
+# Library Inspection
+- name: figma_get_library_component_by_key
+  description: Resolve any component key to full properties, variants, and visual specs without needing the source library file URL.
+  params:
+    componentKey: "The 40-character component key"
+- name: figma_get_library_variables
+  description: List every variable from team libraries the current file has subscribed. Works on every Figma plan.
+  params:
+    libraryName: "Filter by library name (optional)"
+    collectionName: "Filter by collection name (optional)"
+    resolvedType: "Filter by variable type (optional)"
+
+# Design Creation
+- name: figma_execute
+  description: Run any Figma Plugin API code to create designs — frames, shapes, text, components, auto-layout, styles, and effects.
+  params:
+    code: "Figma Plugin API code to execute"
+- name: figma_create_component_set
+  description: Create a component set with variants from an axes matrix in one declarative call.
+  params:
+    axes: "Variant axes matrix (e.g., {State: ['default', 'hover'], Size: ['sm', 'lg']})"
+    baseComponentId: "ID of the base component to generate variants from"
+
+# Token Sync
+- name: figma_export_tokens
+  description: Export Figma variables to design token files. Supports DTCG JSON, CSS, Tailwind v4/v3, SCSS, TS, JSON, Style Dictionary, and Tokens Studio formats.
+  params:
+    fileUrl: "Figma file URL"
+    format: "Output format (dtcg, css, tailwind-v4, tailwind-v3, scss, typescript, json-flat, json-nested, style-dictionary, tokens-studio)"
+    outputPath: "Path to write the exported tokens (optional)"
+- name: figma_import_tokens
+  description: Push code-side token edits back to Figma. Diffs against current state, creates missing variables, applies renames, writes alias references.
+  params:
+    fileUrl: "Figma file URL"
+    payload: "Token data to import (DTCG JSON)"
+    strategy: "Import strategy: merge (default) or replace"
+
+# Variable Management
+- name: figma_create_variable_collection
+  description: Create a new variable collection with modes.
+  params:
+    name: "Collection name"
+    modes: "List of mode names (e.g., ['Light', 'Dark'])"
+- name: figma_create_variable
+  description: Create a COLOR, FLOAT, STRING, or BOOLEAN variable.
+  params:
+    collectionName: "Target collection name"
+    name: "Variable name"
+    type: "Variable type (COLOR, FLOAT, STRING, BOOLEAN)"
+    values: "Values per mode"
+- name: figma_update_variable
+  description: Update variable values in specific modes.
+  params:
+    name: "Variable name"
+    values: "New values per mode"
+- name: figma_batch_create_variables
+  description: Create up to 100 variables in one call (10-50x faster than individual creates).
+  params:
+    collectionName: "Target collection name"
+    variables: "List of variable definitions"
+- name: figma_setup_design_tokens
+  description: Create complete token system (collection + modes + variables) atomically. Accepts DTCG brace references for aliases.
+  params:
+    name: "Collection name"
+    modes: "List of mode names"
+    variables: "Variable definitions with values per mode"
+
+# FigJam Tools
+- name: figjam_create_sticky
+  description: Create a sticky note with color options on a FigJam board.
+  params:
+    text: "Sticky note text"
+    color: "Sticky color (optional)"
+- name: figjam_create_shape_with_text
+  description: Create flowchart shapes (diamond, ellipse, etc.) with text.
+  params:
+    text: "Shape text"
+    shape: "Shape type (diamond, ellipse, rectangle, etc.)"
+- name: figjam_create_table
+  description: Create a table with cell data on a FigJam board.
+  params:
+    rows: "Number of rows"
+    columns: "Number of columns"
+    data: "Cell data"
+- name: figjam_get_board_contents
+  description: Read all content from a FigJam board.
   params: {}
 
-# File Methods
-- name: figma_get_file
-  description: Get a Figma file by key. Use depth parameter for large files.
+# Slides Tools
+- name: figma_list_slides
+  description: List all slides with IDs, positions, and skip status.
+  params: {}
+- name: figma_create_slide
+  description: Create a new blank slide.
+  params: {}
+- name: figma_add_text_to_slide
+  description: Add text to a slide with custom fonts, colors, alignment, and wrapping.
   params:
-    fileKey: "The key of the Figma file (from the file URL)"
-    depth: "Depth of the node tree to return (optional, use 1 for large files)"
-- name: figma_get_file_nodes
-  description: Get specific nodes from a Figma file.
-  params:
-    fileKey: "The key of the Figma file"
-    ids: "Comma-separated list of node IDs to retrieve"
-- name: figma_get_images
-  description: Render images from a Figma file.
-  params:
-    fileKey: "The key of the Figma file"
-    ids: "Comma-separated list of node IDs to render"
-    format: "Image format: jpg, png, svg, or pdf (optional)"
-    scale: "Render scale between 0.01 and 4 (optional)"
-- name: figma_get_image_fills
-  description: Get image fills in a Figma file.
-  params:
-    fileKey: "The key of the Figma file"
-- name: figma_get_file_versions
-  description: Get version history of a Figma file.
-  params:
-    fileKey: "The key of the Figma file"
+    slideId: "Target slide ID"
+    text: "Text content"
+    fontSize: "Font size (optional)"
+    fontFamily: "Font family (optional)"
 
-# Comment Methods
-- name: figma_get_comments
-  description: Get comments in a Figma file.
+# Accessibility
+- name: figma_lint_design
+  description: Run 14 WCAG design checks with conformance level tagging on a Figma file or selection.
   params:
-    fileKey: "The key of the Figma file"
-    as_md: "Return comments as markdown (optional)"
-- name: figma_post_comment
-  description: Add a comment to a Figma file.
-  params:
-    fileKey: "The key of the Figma file"
-    message: "The comment text"
-- name: figma_delete_comment
-  description: Delete a comment from a Figma file.
-  params:
-    fileKey: "The key of the Figma file"
-    comment_id: "The ID of the comment to delete"
-- name: figma_get_comment_reactions
-  description: Get reactions for a comment.
-  params:
-    fileKey: "The key of the Figma file"
-    comment_id: "The ID of the comment"
-- name: figma_post_comment_reaction
-  description: Add a reaction to a comment.
-  params:
-    fileKey: "The key of the Figma file"
-    comment_id: "The ID of the comment"
-    emoji: "The emoji reaction to add"
-- name: figma_delete_comment_reaction
-  description: Delete a reaction from a comment.
-  params:
-    fileKey: "The key of the Figma file"
-    comment_id: "The ID of the comment"
-    emoji: "The emoji reaction to remove"
+    fileUrl: "Figma file URL"
+    rules: "Rule groups to check (wcag, design-system, layout, best-practice) (optional)"
 
-# Team and Project Methods
-- name: figma_get_team_projects
-  description: Get projects in a team.
+# Design-Code Parity
+- name: figma_check_design_parity
+  description: Compare Figma component specs against code implementation, producing a scored diff report with actionable fix items.
   params:
-    team_id: "The ID of the team"
-- name: figma_get_project_files
-  description: Get files in a project.
-  params:
-    project_id: "The ID of the project"
+    componentName: "Figma component name"
+    codePath: "Path to the code implementation"
 
-# Component Methods
-- name: figma_get_team_components
-  description: Get components in a team.
+# Version History
+- name: figma_diff_versions
+  description: Diff two file versions for component and binding deltas.
   params:
-    team_id: "The ID of the team"
-- name: figma_get_file_components
-  description: Get components in a file.
-  params:
-    fileKey: "The key of the Figma file"
-- name: figma_get_component
-  description: Get a component by key.
-  params:
-    key: "The unique key of the component"
-- name: figma_get_team_component_sets
-  description: Get component sets in a team.
-  params:
-    team_id: "The ID of the team"
-- name: figma_get_file_component_sets
-  description: Get component sets in a file.
-  params:
-    fileKey: "The key of the Figma file"
-- name: figma_get_component_set
-  description: Get a component set by key.
-  params:
-    key: "The unique key of the component set"
-
-# Style Methods
-- name: figma_get_team_styles
-  description: Get styles in a team.
-  params:
-    team_id: "The ID of the team"
-- name: figma_get_file_styles
-  description: Get styles in a file.
-  params:
-    fileKey: "The key of the Figma file"
-- name: figma_get_style
-  description: Get a style by key.
-  params:
-    key: "The unique key of the style"
-
-# Webhook Methods
-- name: figma_post_webhook
-  description: Create a webhook for file events.
-  params:
-    event_type: "The event type to listen for (e.g., FILE_UPDATE)"
-    team_id: "The ID of the team"
-    endpoint: "The URL to receive webhook events"
-    passcode: "A passcode for webhook verification"
-    description: "Description of the webhook (optional)"
-- name: figma_get_webhook
-  description: Get a webhook by ID.
-  params:
-    webhook_id: "The ID of the webhook"
-- name: figma_update_webhook
-  description: Update a webhook.
-  params:
-    webhook_id: "The ID of the webhook"
-    event_type: "The new event type (optional)"
-    endpoint: "The new endpoint URL (optional)"
-    passcode: "The new passcode (optional)"
-    description: "The new description (optional)"
-- name: figma_delete_webhook
-  description: Delete a webhook.
-  params:
-    webhook_id: "The ID of the webhook to delete"
-- name: figma_get_team_webhooks
-  description: Get webhooks for a team.
-  params:
-    team_id: "The ID of the team"
-
-# Library Analytics Methods
-- name: figma_get_library_analytics_component_usages
-  description: Get library analytics component usage data.
-  params:
-    team_id: "The ID of the team"
-- name: figma_get_library_analytics_style_usages
-  description: Get library analytics style usage data.
-  params:
-    team_id: "The ID of the team"
-- name: figma_get_library_analytics_variable_usages
-  description: Get library analytics variable usage data.
-  params:
-    team_id: "The ID of the team"
+    fileUrl: "Figma file URL"
+    fromVersion: "Starting version ID"
+    toVersion: "Ending version ID"
