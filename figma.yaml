@@ -54,15 +54,9 @@ env:
   required: false
   sensitive: false
   description: "Enable interactive MCP Apps (Token Browser, Design System Dashboard). Values: true, false (default)"
-runtime: containerized
-containerizedConfig:
-  image: ghcr.io/southleft/figma-console-mcp:latest
-  port: 8099
-  path: /
-  args:
-  - npx
-  - -y
-  - figma-console-mcp@latest
+runtime: remote
+remoteConfig:
+  fixedURL: https://figma-console-mcp.southleft.com/sse
 toolPreview:
 # Status & Diagnostics
 - name: figma_get_status
