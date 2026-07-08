@@ -21,16 +21,9 @@ description: |
 
   ## What you'll need to connect
 
-  **Required:**
-  - **Figma Access Token**: A Figma Personal Access Token with scopes: File content (Read), File versions (Read), Variables (Read), Comments (Read and write)
+  **No Setup Required**: Authentication is handled automatically through OAuth when you first use design system tools.
 
-  **To generate an access token:**
-  1. Go to Figma Settings, then Security, then Personal access tokens
-  2. Click Generate new token
-  3. Set the required scopes and copy the token (starts with figd_)
-
-  **Optional:**
-  - **Enable MCP Apps**: Set to true to enable interactive UI experiences (Token Browser, Design System Dashboard)
+  **Note:** The remote SSE mode provides 9 read-only tools. For full write access (96+ tools), use NPX or Cloud Mode setup as described in the project documentation.
 
   ## Examples
   - "Get all design variables from this Figma file"
@@ -43,17 +36,7 @@ metadata:
   categories: Design, Developer Tools
 icon: https://avatars.githubusercontent.com/u/5155369?s=200&v=4
 repoURL: https://github.com/southleft/figma-console-mcp
-env:
-- key: FIGMA_ACCESS_TOKEN
-  name: Figma Access Token
-  required: true
-  sensitive: true
-  description: Your Figma Personal Access Token (starts with figd_). Requires scopes File content (Read), File versions (Read), Variables (Read), Comments (Read and write).
-- key: ENABLE_MCP_APPS
-  name: Enable MCP Apps
-  required: false
-  sensitive: false
-  description: Enable interactive MCP Apps (Token Browser, Design System Dashboard). Set to true or false (default).
+env: []
 runtime: remote
 remoteConfig:
   fixedURL: https://figma-console-mcp.southleft.com/sse
