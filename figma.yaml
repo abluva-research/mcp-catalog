@@ -42,8 +42,8 @@ repoURL: https://github.com/southleft/figma-console-mcp
 env: []
 runtime: remote
 remoteConfig:
-  # fixedURL: https://figma-console-mcp.southleft.com/mcp
-  fixedURL: https://figma-console-mcp.southleft.com/sse
+  fixedURL: https://figma-console-mcp.southleft.com/mcp
+  # fixedURL: https://figma-console-mcp.southleft.com/sse
 toolPreview:
 - name: figma_get_status
   description: Check WebSocket bridge connection and file context.
