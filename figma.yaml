@@ -1,7 +1,7 @@
 name: Figma
 entryKey: obot-figma
 serverUserType: singleUser
-shortDescription: Extract design systems, create UI components, manage variables, sync tokens, and debug Figma files
+shortDescription: Extract design systems, create UI components, manage variables, sync tokens, and debug Figma files (requires Desktop Bridge plugin for write access)
 description: |
   A Model Context Protocol (MCP) server that bridges design and development, giving AI assistants complete access to Figma for extraction, creation, debugging, and bidirectional token sync.
 
@@ -20,10 +20,12 @@ description: |
   - **Design-Code Parity**: Compare Figma specs against code implementations with scored diff reports
 
   ## What you'll need to connect
+  - **Figma Personal Access Token**: Create one at Figma Settings → Security → Personal access tokens (starts with `figd_`)
+  - **Figma Desktop App**: Must be installed and open with the file you want to work on
+  - **Desktop Bridge Plugin**: Import the plugin manifest into Figma (run `npx -y figma-console-mcp@latest` once to generate plugin files at `~/.figma-console-mcp/plugin/manifest.json`, then import in Figma via Plugins → Development → Import plugin from manifest)
+  - **Cloud Mode**: Toggle Cloud Mode ON in the plugin UI, then pair using the 6-character code provided by your AI client
 
-  **No Setup Required**: Authentication is handled automatically through OAuth when you first use design system tools.
-
-  **Note:** The remote SSE mode provides 9 read-only tools. For full write access (96+ tools), use NPX or Cloud Mode setup as described in the project documentation.
+  **Note:** Cloud Mode provides 101 tools including full write access. Requires Figma Desktop with the Desktop Bridge plugin running and paired via a 6-character code. Read-only operations work with just the access token.
 
   ## Examples
   - "Get all design variables from this Figma file"
@@ -34,12 +36,13 @@ description: |
   - "Take a screenshot of the current canvas"
 metadata:
   categories: Design, Developer Tools
+  allow-multiple: "true"
 icon: https://avatars.githubusercontent.com/u/5155369?s=200&v=4
 repoURL: https://github.com/southleft/figma-console-mcp
 env: []
 runtime: remote
 remoteConfig:
-  fixedURL: https://figma-console-mcp.southleft.com/sse
+  fixedURL: https://figma-console-mcp.southleft.com/mcp
 toolPreview:
 - name: figma_get_status
   description: Check WebSocket bridge connection and file context.
