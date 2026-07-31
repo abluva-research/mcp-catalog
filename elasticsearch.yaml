@@ -1,5 +1,5 @@
 name: Elasticsearch
-entryKey: obot-elasticsearch
+entryKey: ablv-elasticsearch
 serverUserType: singleUser
 shortDescription: Search, query, and manage Elasticsearch indices with vector and full-text search
 description: |

@@ -1,5 +1,5 @@
 name: Odoo
-entryKey: obot-odoo
+entryKey: ablv-odoo
 serverUserType: singleUser
 shortDescription: Access and manage Odoo ERP data including customers, sales, inventory, invoices, and projects
 description: |

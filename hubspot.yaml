@@ -1,5 +1,5 @@
 name: HubSpot
-entryKey: obot-hubspot
+entryKey: ablv-hubspot
 serverUserType: singleUser
 shortDescription: Manage HubSpot CRM objects, schemas, properties, and workflows
 description: |

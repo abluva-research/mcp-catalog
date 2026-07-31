@@ -1,5 +1,5 @@
 name: Figma
-entryKey: obot-figma
+entryKey: ablv-figma
 serverUserType: singleUser
 shortDescription: Extract design systems, create UI components, manage variables, sync tokens, and debug Figma files (requires Desktop Bridge plugin for write access)
 description: |
