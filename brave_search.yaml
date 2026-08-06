@@ -35,7 +35,7 @@ repoURL: https://github.com/brave/brave-search-mcp-server
 env:
 - key: BRAVE_API_KEY
   name: Brave API Key
-  required: true
+  required: false
   sensitive: true
   description: Your Brave Search API key. Get one at https://brave.com/search/api
 runtime: containerized
