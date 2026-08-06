@@ -41,7 +41,7 @@ toolPreview:
     url: The webpage URL to fetch content from
 runtime: containerized
 containerizedConfig:
-  image: ghcr.io/obot-platform/mcp-images/duckduckgo-search:0.1.2
+  image: phx.ocir.io/axsfgj15p1je/mcp-images/duckduckgo-search:0.1.2
   port: 8099
   path: /
   args:
