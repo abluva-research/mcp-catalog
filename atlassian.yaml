@@ -260,6 +260,32 @@ toolPreview:
 metadata:
   categories: Developer Tools
   allow-multiple: "true"
+  # vendorIdentity drives Project Hub's per-user OAuth identity verification.
+  # When this key is present with "enforce": true, Hub fetches the actually
+  # logged-in vendor account (via Obot's stored OAuth token) and compares it to
+  # the account assigned to the member. On mismatch the binding is marked
+  # "mismatch" and MCP tool calls are blocked until the user re-authenticates as
+  # the assigned account. Remove this key (or set "enforce": false) to disable
+  # enforcement entirely — no vendor login comparison is performed in that case.
+  #
+  #   userinfoUrl  vendor endpoint returning the current user profile
+  #   headers      extra request headers sent to userinfoUrl
+  #   fields       maps the vendor JSON response fields to identity slots
+  #   fallback     provider-specific fallback lookup when userinfoUrl is denied
+  #   onMismatch   "block" (default) marks mismatch and blocks tool calls
+  vendorIdentity: |
+    {
+      "provider": "atlassian",
+      "enforce": true,
+      "userinfoUrl": "https://api.atlassian.com/me",
+      "headers": { "Accept": "application/json" },
+      "fields": { "accountId": "account_id", "login": "email", "display": "name" },
+      "fallback": {
+        "type": "atlassian-jira-myself",
+        "accessibleResourcesUrl": "https://api.atlassian.com/oauth/token/accessible-resources"
+      },
+      "onMismatch": "block"
+    }
 icon: https://avatars.githubusercontent.com/u/168166?s=200&v=4
 repoURL: https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/
 runtime: remote
