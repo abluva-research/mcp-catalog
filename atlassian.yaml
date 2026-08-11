@@ -272,6 +272,7 @@ metadata:
       "enforce": true,
       "onMismatch": "block",
       "tool": "atlassianUserInfo",
+      "args": {},
       "fields": {
         "accountId": "account_id",
         "login": "email",
