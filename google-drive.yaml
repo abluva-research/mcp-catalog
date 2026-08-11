@@ -27,6 +27,26 @@ description: |
 metadata:
   categories: Business
   allow-multiple: "true"
+  # Declarative per-user OAuth identity verification. See atlassian.yaml for the
+  # full field reference. enforce=false (or removing this block) disables it.
+  vendorIdentity: |
+    {
+      "provider": "google",
+      "enforce": true,
+      "onMismatch": "block",
+      "probes": [
+        {
+          "type": "http",
+          "url": "https://openidconnect.googleapis.com/v1/userinfo",
+          "fields": { "accountId": "sub", "login": "email", "display": "name" }
+        },
+        {
+          "type": "http",
+          "url": "https://www.googleapis.com/drive/v3/about?fields=user",
+          "fields": { "accountId": "user.permissionId", "login": "user.emailAddress", "display": "user.displayName" }
+        }
+      ]
+    }
 icon: https://img.icons8.com/?size=100&id=VLr4hUR8iMGF&format=png&color=000000
 repoURL: https://github.com/obot-platform/google-mcp/tree/main/drive
 runtime: remote

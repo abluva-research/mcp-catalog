@@ -261,39 +261,56 @@ metadata:
   categories: Developer Tools
   allow-multiple: "true"
   # vendorIdentity is the registry-driven config for per-user OAuth identity
-  # verification. It is consumed by BOTH sides so onboarding a new vendor is a
-  # YAML edit, not a code change:
-  #   * Obot reads userinfoUrl/headers/fields and uses the user's stored vendor
-  #     OAuth token to fetch the actually logged-in account. No hardcoded
-  #     per-vendor endpoint is required (Obot keeps a built-in map only as a
-  #     fallback for entries that omit this block).
+  # verification. It is fully declarative — there is NO vendor-specific code in
+  # Obot or Project Hub. Onboarding a vendor is a YAML edit only.
+  #
+  #   * Obot runs the ordered "probes" below using the user's stored vendor OAuth
+  #     token and returns the first probe that yields an accountId or login.
   #   * Project Hub reads enforce/onMismatch to decide whether to compare that
-  #     fetched account against the account assigned to the member.
+  #     fetched account against the account assigned to the member, and whether
+  #     to block MCP tool calls on mismatch.
   #
-  # When present with "enforce": true, on mismatch the binding is marked
-  # "mismatch" and MCP tool calls are blocked until the user re-authenticates as
-  # the assigned account. Remove this key (or set "enforce": false) to disable
-  # enforcement entirely — no vendor login comparison is performed in that case.
+  # enforce=false (or omitting this whole block) disables comparison entirely.
   #
-  #   provider     stable key for this vendor (used for logging + fallback)
-  #   userinfoUrl  vendor endpoint returning the current user profile
-  #   headers      extra request headers sent to userinfoUrl
-  #   fields       maps the vendor JSON response fields to identity slots
-  #                (accountId/login/display)
-  #   fallback     provider-specific fallback lookup when userinfoUrl is denied
-  #   onMismatch   "block" (default) marks mismatch and blocks tool calls
+  # Probe types:
+  #   mcp-tool     call a whoami tool on the server (token is always valid for
+  #                the MCP endpoint — the most reliable identity source)
+  #   http         GET url with the token; `capture` pulls values (e.g. cloud ids)
+  #                and `forEach` templates them into the next probe's {var}
+  #   jwt          decode the access/id token and read claims
+  #   token-regex  extract an id embedded in the token string ($1,$2 = submatches)
+  #
+  # For Atlassian Rovo MCP tokens: /me on api.atlassian.com and the id gateway do
+  # not identify the token (no read:me scope), so we prefer the whoami tool, then
+  # Jira /myself (returns email), then the accountId encoded in the token.
   vendorIdentity: |
     {
       "provider": "atlassian",
       "enforce": true,
-      "userinfoUrl": "https://id.atlassian.com/gateway/api/me",
-      "headers": { "Accept": "application/json" },
-      "fields": { "accountId": "account_id", "login": "email", "display": "name" },
-      "fallback": {
-        "type": "atlassian-jira-myself",
-        "accessibleResourcesUrl": "https://api.atlassian.com/oauth/token/accessible-resources"
-      },
-      "onMismatch": "block"
+      "onMismatch": "block",
+      "probes": [
+        {
+          "type": "mcp-tool",
+          "tool": "atlassianUserInfo",
+          "fields": { "accountId": "account_id", "login": "email", "display": "name" }
+        },
+        {
+          "type": "http",
+          "url": "https://api.atlassian.com/oauth/token/accessible-resources",
+          "capture": { "cloudId": "$[*].id" }
+        },
+        {
+          "type": "http",
+          "forEach": "cloudId",
+          "url": "https://api.atlassian.com/ex/jira/{cloudId}/rest/api/3/myself",
+          "fields": { "accountId": "accountId", "login": "emailAddress", "display": "displayName" }
+        },
+        {
+          "type": "token-regex",
+          "pattern": "^([0-9]{6})-([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})",
+          "fields": { "accountId": "$1:$2" }
+        }
+      ]
     }
 icon: https://avatars.githubusercontent.com/u/168166?s=200&v=4
 repoURL: https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/
