@@ -64,7 +64,7 @@ env:
 
 runtime: containerized
 containerizedConfig:
-  image: ghcr.io/obot-platform/mcp-images/elasticsearch:main
+  image: phx.ocir.io/axsfgj15p1je/mcp-images/elasticsearch:main
   port: 8080
   path: "/mcp"
   args:

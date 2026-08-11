@@ -87,6 +87,6 @@ env:
 
 runtime: containerized
 containerizedConfig:
-  image: ghcr.io/obot-platform/mcp-images/googlecloudrun:main
+  image: phx.ocir.io/axsfgj15p1je/mcp-images/googlecloudrun:main
   port: 3000
   path: "/mcp"
