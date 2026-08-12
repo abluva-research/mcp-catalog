@@ -98,7 +98,7 @@ runtime: containerized
 containerizedConfig:
   image: ghcr.io/ivnvxd/mcp-server-odoo:0.7.1
   port: 8000
-  path: /
+  path: /mcp/
   args:
   - --transport
   - streamable-http
