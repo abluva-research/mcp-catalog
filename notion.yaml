@@ -29,7 +29,7 @@ metadata:
   vendorIdentity: |
     {
       "provider": "notion",
-      "enforce": true,
+      "enforce": false,
       "onMismatch": "block",
       "tool": "notion-get-self",
       "args": {},
