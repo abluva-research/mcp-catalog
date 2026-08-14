@@ -26,6 +26,19 @@ description: |
 
 metadata:
   categories: SaaS & API Integrations,Databases
+  vendorIdentity: |
+    {
+      "provider": "notion",
+      "enforce": true,
+      "onMismatch": "block",
+      "tool": "notion-get-self",
+      "args": {},
+      "fields": {
+        "accountId": "account_id",
+        "login": "email",
+        "display": "name"
+      }
+    }
 icon: https://avatars.githubusercontent.com/u/4792552?v=4
 repoURL: https://github.com/makenotion/notion-mcp-server
 toolPreview:
