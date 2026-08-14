@@ -74,6 +74,19 @@ description: |
 metadata:
   categories: Communication
   allow-multiple: "true"
+  vendorIdentity: |
+    {
+      "provider": "slack",
+      "enforce": true,
+      "onMismatch": "block",
+      "tool": "user_context",
+      "args": {},
+      "fields": {
+        "accountId": "account_id",
+        "login": "email",
+        "display": "name"
+      }
+    }
 icon: https://img.icons8.com/?size=100&id=4n94I13nDTyw&format=png&color=000000
 repoURL: https://github.com/abluva/slack-mcp
 runtime: containerized
