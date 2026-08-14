@@ -31,12 +31,12 @@ metadata:
       "provider": "notion",
       "enforce": false,
       "onMismatch": "block",
-      "tool": "notion-get-self",
-      "args": {},
+      "tool": "notion-fetch",
+      "args": {"id":"self"},
       "fields": {
-        "accountId": "account_id",
-        "login": "email",
-        "display": "name"
+        "accountId": "self.user.id",
+        "login": "self.user.email",
+        "display": "self.user.name"
       }
     }
 icon: https://avatars.githubusercontent.com/u/4792552?v=4
