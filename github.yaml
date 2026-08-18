@@ -16,8 +16,9 @@ description: |
 
   ## What you'll need to connect
 
-  **Required:**
-  - **Personal Access Token**: GitHub Personal Access Token with appropriate repository permissions
+  **Authentication (choose at launch):**
+  - **OAuth 2.0**: Sign in with GitHub; vendor identity is verified per assignment in Projects.
+  - **Personal Access Token**: GitHub PAT with appropriate repository permissions (no per-user vendor OAuth).
 
   **Optional:**
   - **Read-only Mode**: Add `/readonly` to any toolset URL to restrict to read-only operations
@@ -202,15 +203,47 @@ toolPreview:
 metadata:
   categories: Developer Tools
   unsupportedTools: create_or_update_file,push_files
+  vendorIdentity: |
+    {
+      "provider": "github",
+      "enforce": true,
+      "onMismatch": "block",
+      "tool": "get_me",
+      "args": {},
+      "fields": {
+        "accountId": "id",
+        "login": "login",
+        "display": "details.name"
+      }
+    }
+  authMechanisms: |
+    [
+      {
+        "value": "oauth",
+        "label": "OAuth 2.0",
+        "description": "Sign in with GitHub; vendor identity is verified per assignment in Projects.",
+        "requiresVendorIdentity": true
+      },
+      {
+        "value": "pat",
+        "label": "Personal Access Token",
+        "description": "Use a GitHub PAT for this deployment (no per-user vendor OAuth).",
+        "requiresVendorIdentity": false,
+        "headers": [
+          {
+            "name": "Personal Access Token",
+            "key": "Authorization",
+            "required": true,
+            "sensitive": true,
+            "prefix": "Bearer ",
+            "description": "GitHub Personal Access Token with repository access"
+          }
+        ]
+      }
+    ]
 icon: https://avatars.githubusercontent.com/u/9919?v=4
 repoURL: https://github.com/github/github-mcp-server
 
 runtime: remote
 remoteConfig:
   hostname: api.githubcopilot.com
-  headers:
-  - name: Personal Access Token
-    description: GitHub PAT
-    key: Authorization
-    required: true
-    sensitive: true
