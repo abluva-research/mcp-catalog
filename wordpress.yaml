@@ -19,6 +19,19 @@ description: |
 
 metadata:
   categories: Blogging, SaaS & API Integrations
+  vendorIdentity: |
+    {
+      "provider": "wordpress",
+      "enforce": true,
+      "onMismatch": "block",
+      "tool": "get_me",
+      "args": {},
+      "fields": {
+        "accountId": "account_id",
+        "login": "email",
+        "display": "name"
+      }
+    }
 icon: https://img.icons8.com/?size=100&id=13664&format=png&color=000000
 repoURL: https://github.com/abluva/wordpress-mcp-server
 
@@ -241,6 +254,6 @@ env:
   sensitive: true
 runtime: containerized
 containerizedConfig:
-  image: phx.ocir.io/axsfgj15p1je/wordpress-mcp-server:main
+  image: phx.ocir.io/axsfgj15p1je/mcp-images/wordpress:main
   port: 8099
   path: "/"

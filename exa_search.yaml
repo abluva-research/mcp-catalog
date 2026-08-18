@@ -67,7 +67,7 @@ toolPreview:
     subpageTarget: Keywords to prioritize when selecting subpages
 runtime: containerized
 containerizedConfig:
-  image: ghcr.io/obot-platform/mcp-images/exa-search:3.2.0
+  image: phx.ocir.io/axsfgj15p1je/mcp-images/exa-search:3.2.0
   port: 8099
   path: /
   args:

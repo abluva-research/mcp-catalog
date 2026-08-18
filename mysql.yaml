@@ -79,7 +79,7 @@ env:
   description: The name of your MySQL database.
 runtime: containerized
 containerizedConfig:
-  image: ghcr.io/obot-platform/mcp-images/mysql-mcp-server:0.2.2
+  image: phx.ocir.io/axsfgj15p1je/mcp-images/mysql-mcp-server:0.2.2
   port: 8099
   path: /
   args:

@@ -60,7 +60,7 @@ env:
   description: Your Odoo instance URL (e.g., https://mycompany.odoo.com)
 - key: ODOO_API_KEY
   name: Odoo API Key
-  required: true
+  required: false
   sensitive: true
   description: API key for authentication (recommended). Alternatively, provide username and password instead.
 - key: ODOO_USER
