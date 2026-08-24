@@ -115,7 +115,8 @@ icon: https://img.icons8.com/fluency/96/sql.png
 repoURL: https://github.com/abluva-research/secure-ai-plane-x/tree/main/test-mcp-servers/sql-sandbox
 runtime: remote
 remoteConfig:
-  hostname: ""
+  # PROD github-runner internal URL — Obot requires fixedURL, hostname, or urlTemplate (empty hostname fails sync).
+  fixedURL: http://10.0.11.24:8095/mcp
   headers:
     - name: Access Token
       key: Authorization
