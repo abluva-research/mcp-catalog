@@ -50,6 +50,13 @@ repoURL: https://linear.app/changelog/2025-05-01-mcp
 runtime: remote
 remoteConfig:
   fixedURL: https://mcp.linear.app/mcp
+  headers:
+   - name: Linear API Key
+     key: Authorization
+     required: false
+     sensitive: true
+     prefix: "Bearer "
+     description: Linear API key; leave empty when using OAuth
 toolPreview:
   - name: list_comments
     description: List comments for a specific Linear issue
