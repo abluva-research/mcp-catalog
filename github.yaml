@@ -206,7 +206,7 @@ metadata:
   vendorIdentity: |
     {
       "provider": "github",
-      "enforce": true,
+      "enforce": false,
       "onMismatch": "block",
       "tool": "get_me",
       "args": {},
