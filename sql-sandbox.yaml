@@ -120,7 +120,7 @@ remoteConfig:
   headers:
     - name: Access Token
       key: Authorization
-      required: true
+      required: false
       sensitive: true
       prefix: "Bearer "
       description: Bearer token (PAT at launch, or GitHub access token after custom OAuth)
