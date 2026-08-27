@@ -34,12 +34,12 @@ env:
   - name: Databricks workspace hostname
     key: DATABRICKS_WORKSPACE_URL
     description: Databricks workspace hostname, (e.g., https://your-workspace.cloud.databricks.com)
-    required: true
+    required: false
     sensitive: false
   - name: Genie space ID
     key: DATABRICKS_GENIE_SPACE_ID
     description: Your Databricks Genie space ID
-    required: true
+    required: false
     sensitive: false
 
 runtime: remote
