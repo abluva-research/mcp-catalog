@@ -44,7 +44,7 @@ env:
 
 runtime: remote
 remoteConfig:
-  fixedURL: ${DATABRICKS_WORKSPACE_URL}/api/2.0/mcp/genie/${DATABRICKS_GENIE_SPACE_ID}
+  fixedURL: https://${DATABRICKS_WORKSPACE_URL}/api/2.0/mcp/genie/${DATABRICKS_GENIE_SPACE_ID}
   # fixedURL:
   headers:
   - name: Personal Access Token
