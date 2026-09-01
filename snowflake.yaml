@@ -107,7 +107,7 @@ description: |
 metadata:
   categories: Data Warehouse, SQL, Analytics, Database Management
 icon: https://avatars.githubusercontent.com/u/6453780?s=48&v=4
-repoURL: https://github.com/Snowflake-Labs/mcp
+repoURL: https://github.com/obot-platform/snowflake-mcp
 
 toolPreview:
   - name: list-objects
@@ -242,3 +242,17 @@ containerizedConfig:
   image: phx.ocir.io/axsfgj15p1je/mcp-images/snowflake:main
   port: 9000
   path: "/mcp"
+  # The server build reads Snowflake credentials from CLI args, not env vars.
+  # With no args it falls back to connection_name "default" (no connections.toml)
+  # and crashes: "Invalid connection_name 'default', known ones are []".
+  # Pass account/user/password as flags, expanding the catalog env values.
+  args:
+  - mcp-server-snowflake
+  - --transport
+  - streamable-http
+  - --account
+  - ${SNOWFLAKE_ACCOUNT}
+  - --user
+  - ${SNOWFLAKE_USER}
+  - --password
+  - ${SNOWFLAKE_PASSWORD}
