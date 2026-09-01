@@ -34,10 +34,10 @@ metadata:
         "requiresVendorIdentity": true,
         "oauthProvider": "asana",
         "oauthDefaults": {
-          "authorize_url": "https://app.asana.com/-/oauth_authorize",
-          "token_url": "https://app.asana.com/-/oauth_token",
-          "refresh_url": "https://app.asana.com/-/oauth_token",
-          "scopes": "openid",
+          "authorize_url": "https://mcp.asana.com/authorize",
+          "token_url": "https://mcp.asana.com/token",
+          "refresh_url": "https://mcp.asana.com/token",
+          "scopes": "default",
           "redirect_uri_hint": "https://hub.abluva.com/api/v1/hub/mcp/custom-oauth/callback"
         },
         "oauthFields": [
@@ -46,13 +46,13 @@ metadata:
           { "key": "client_secret", "label": "Client Secret", "required": true, "sensitive": true,
             "placeholder": "Client secret from Asana developer console" },
           { "key": "authorize_url", "label": "Authorization URL", "required": true, "sensitive": false,
-            "default": "https://app.asana.com/-/oauth_authorize" },
+            "default": "https://mcp.asana.com/authorize" },
           { "key": "token_url", "label": "Token URL", "required": true, "sensitive": false,
-            "default": "https://app.asana.com/-/oauth_token" },
+            "default": "https://mcp.asana.com/token" },
           { "key": "refresh_url", "label": "Refresh URL", "required": false, "sensitive": false,
-            "default": "https://app.asana.com/-/oauth_token" },
+            "default": "https://mcp.asana.com/token" },
           { "key": "scopes", "label": "Scopes", "required": false, "sensitive": false,
-            "default": "openid", "description": "Space-separated Asana OAuth scopes" }
+            "default": "default", "description": "Asana MCP OAuth scopes (per discovery metadata)" }
         ]
       }
     ]
