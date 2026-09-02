@@ -25,37 +25,37 @@ description: |
 metadata:
   categories: Business, Developer Tools
   allow-multiple: "true"
-  # authMechanisms: |
-  #   [
-  #     {
-  #       "value": "custom_oauth",
-  #       "label": "Custom OAuth App (Asana)",
-  #       "description": "Use your own pre-registered Asana OAuth app. Users sign in with Asana; Hub brokers per-user OAuth.",
-  #       "requiresVendorIdentity": true,
-  #       "oauthProvider": "asana",
-  #       "oauthDefaults": {
-  #         "authorize_url": "https://app.asana.com/-/oauth_authorize",
-  #         "token_url": "https://app.asana.com/-/oauth_token",
-  #         "refresh_url": "https://app.asana.com/-/oauth_token",
-  #         "scopes": "default",
-  #         "redirect_uri_hint": "https://hub.abluva.com/api/v1/hub/mcp/custom-oauth/callback"
-  #       },
-  #       "oauthFields": [
-  #         { "key": "client_id", "label": "Client ID", "required": true, "sensitive": false,
-  #           "placeholder": "Client ID from Asana developer console" },
-  #         { "key": "client_secret", "label": "Client Secret", "required": true, "sensitive": true,
-  #           "placeholder": "Client secret from Asana developer console" },
-  #         { "key": "authorize_url", "label": "Authorization URL", "required": true, "sensitive": false,
-  #           "default": "https://app.asana.com/-/oauth_authorize" },
-  #         { "key": "token_url", "label": "Token URL", "required": true, "sensitive": false,
-  #           "default": "https://app.asana.com/-/oauth_token" },
-  #         { "key": "refresh_url", "label": "Refresh URL", "required": false, "sensitive": false,
-  #           "default": "https://app.asana.com/-/oauth_token" },
-  #         { "key": "scopes", "label": "Scopes", "required": false, "sensitive": false,
-  #           "default": "default", "description": "Asana MCP scope (metadata advertises 'default'; Asana docs note MCP apps may not require scopes)" }
-  #       ]
-  #     }
-  #   ]
+  authMechanisms: |
+    [
+      {
+        "value": "custom_oauth",
+        "label": "Custom OAuth App (Asana)",
+        "description": "Use your own pre-registered Asana OAuth app. Users sign in with Asana; Hub brokers per-user OAuth.",
+        "requiresVendorIdentity": true,
+        "oauthProvider": "asana",
+        "oauthDefaults": {
+          "authorize_url": "https://app.asana.com/-/oauth_authorize",
+          "token_url": "https://app.asana.com/-/oauth_token",
+          "refresh_url": "https://app.asana.com/-/oauth_token",
+          "scopes": "default",
+          "redirect_uri_hint": "https://hub.abluva.com/api/v1/hub/mcp/custom-oauth/callback"
+        },
+        "oauthFields": [
+          { "key": "client_id", "label": "Client ID", "required": true, "sensitive": false,
+            "placeholder": "Client ID from Asana developer console" },
+          { "key": "client_secret", "label": "Client Secret", "required": true, "sensitive": true,
+            "placeholder": "Client secret from Asana developer console" },
+          { "key": "authorize_url", "label": "Authorization URL", "required": true, "sensitive": false,
+            "default": "https://app.asana.com/-/oauth_authorize" },
+          { "key": "token_url", "label": "Token URL", "required": true, "sensitive": false,
+            "default": "https://app.asana.com/-/oauth_token" },
+          { "key": "refresh_url", "label": "Refresh URL", "required": false, "sensitive": false,
+            "default": "https://app.asana.com/-/oauth_token" },
+          { "key": "scopes", "label": "Scopes", "required": false, "sensitive": false,
+            "default": "default", "description": "Asana MCP scope (metadata advertises 'default'; Asana docs note MCP apps may not require scopes)" }
+        ]
+      }
+    ]
 
 icon: https://avatars.githubusercontent.com/u/1472111?s=200&v=4
 repoURL: https://developers.asana.com/docs/using-asanas-mcp-server
