@@ -26,6 +26,25 @@ description: |
 metadata:
   categories: Business
   allow-multiple: "true"
+  # Declarative per-user OAuth identity verification. See atlassian.yaml for the
+  # full field reference. enforce=false (or removing this block) disables it.
+  vendorIdentity: |
+    {
+      "provider": "microsoft",
+      "enforce": true,
+      "onMismatch": "block",
+      "probes": [
+        {
+          "type": "http",
+          "url": "https://graph.microsoft.com/v1.0/me",
+          "fields": { "accountId": "id", "login": "userPrincipalName", "display": "displayName" }
+        },
+        {
+          "type": "jwt",
+          "fields": { "accountId": "oid", "login": "preferred_username", "display": "name" }
+        }
+      ]
+    }
 icon: https://img.icons8.com/?size=100&id=ut6gQeo5pNqf&format=png&color=000000
 repoURL: https://github.com/obot-platform/microsoft-office-365-mcp/tree/main/outlook
 runtime: remote

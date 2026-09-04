@@ -20,6 +20,31 @@ description: |
 
 metadata:
   categories: Project Management, Developer Tools
+  authMechanisms: |
+    [
+      {
+        "value": "oauth",
+        "label": "OAuth 2.0",
+        "description": "Sign in with Linear; vendor identity is verified per assignment in Projects.",
+        "requiresVendorIdentity": true
+      },
+      {
+        "value": "api",
+        "label": "Linear API Key",
+        "description": "Use a Linear API Key for this deployment (no per-user vendor OAuth).",
+        "requiresVendorIdentity": false,
+        "headers": [
+          {
+            "name": "Linear API Key",
+            "key": "Authorization",
+            "required": true,
+            "sensitive": true,
+            "prefix": "Bearer ",
+            "description": "Linear API Key Token with workspace access"
+          }
+        ]
+      }
+    ]
 icon: https://avatars.githubusercontent.com/u/46686594?s=200&v=4
 repoURL: https://linear.app/changelog/2025-05-01-mcp
 runtime: remote

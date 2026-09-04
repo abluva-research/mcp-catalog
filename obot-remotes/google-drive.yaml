@@ -31,6 +31,15 @@ description: |
 metadata:
   categories: Business
   allow-multiple: "true"
+  authMechanisms: |
+    [
+      {
+        "value": "oauth",
+        "label": "OAuth 2.0",
+        "description": "Sign in with Google; vendor OAuth is required after launch in Assignments.",
+        "requiresVendorIdentity": true
+      }
+    ]
 icon: https://img.icons8.com/?size=100&id=VLr4hUR8iMGF&format=png&color=000000
 repoURL: https://github.com/obot-platform/google-mcp/tree/main/drive
 runtime: remote

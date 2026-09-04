@@ -77,7 +77,7 @@ env:
   description: Service identifier for chart generation records
 runtime: containerized
 containerizedConfig:
-  image: ghcr.io/obot-platform/mcp-images/antv-charts:0.9.10-obot1
+  image:phx.ocir.io/axsfgj15p1je/mcp-images/antv-charts:0.9.10
   port: 8099
   path: /
   args:
